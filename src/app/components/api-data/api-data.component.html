@@ -1,0 +1,40 @@
+<div class="container mx-auto mt-8">
+  <h1 class="text-3xl font-bold mb-6 text-center">API Data</h1>
+  <form
+    [formGroup]="apiForm"
+    (ngSubmit)="fetchData()"
+    class="max-w-3xl mx-auto bg-white p-8 rounded-lg shadow-md"
+  >
+    <div class="mb-4">
+      <label for="title" class="block text-gray-700 font-bold mb-2">Title</label>
+      <input
+        type="text"
+        class="form-control block w-full p-3 border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+        id="title"
+        placeholder="Title"
+        formControlName="title"
+        [ngClass]="{
+          'border-red-500': getControl().title.errors && getControl().title.touched
+        }"
+      />
+      <div *ngIf="getControl().title.errors && getControl().title.touched" class="mt-1 text-red-500 text-sm">
+        <small *ngIf="getControl().title.errors?.['required']">Title is required</small>
+        <small *ngIf="getControl().title.errors?.['minlength']">Please enter more than two letters in title</small>
+      </div>
+    </div>
+
+    <button class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded w-full" type="submit">
+      Fetch Data
+    </button>
+
+    <div *ngIf="data" class="mt-8">
+      <div class="max-w-md rounded overflow-hidden shadow-lg mx-auto" *ngFor="let book of data">
+        <div class="px-6 py-4">
+          <div class="font-bold text-xl mb-2">{{ book.title }}</div>
+          <p class="text-gray-700 text-base">Author: {{ book.author_name?.join(', ') }}</p>
+          <p class="text-gray-700 text-base">First Published: {{ book.first_publish_year }}</p>
+        </div>
+      </div>
+    </div>
+  </form>
+</div>
